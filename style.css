@@ -5,7 +5,7 @@
 }
 table{
     border-collapse: collapse; 
-    margin:80px 0px;
+    margin:20px 0px;
 }
 th,td{
     border:1px solid black;
@@ -14,4 +14,20 @@ th,td{
     text-align: center;
     outline: none;
 }
-
+.buttons{
+    margin-top: 50px;
+}
+.btn{
+    width:20px;
+    outline:none
+}
+#btn-bold{
+    font-weight: bold;
+ 
+}
+#btn-italic{
+    font-style: italic;
+}
+#btn-underline{
+    text-decoration: underline;
+}
