@@ -1,9 +1,12 @@
 const tRow = document.getElementById("TH-Row");
 const tBody = document.getElementById("t-Body")
 
-const bold_btn = document.getElementById("btn-bold")
-const btn_italic= document.getElementById("btn-italic")
+const bold_btn = document.getElementById("btn-bold");
+const btn_italic= document.getElementById("btn-italic");
 const underline_btn = document.getElementById("btn-underline")
+const cutbtn = document.getElementById("btn-cut");
+const copyBtn = document.getElementById("btn-copy");
+const pasteBtn = document.getElementById("btn-paste");
 
 
 function createCol(type,WhichRow,rowNum){
@@ -16,6 +19,7 @@ function createCol(type,WhichRow,rowNum){
         else{
             cell.setAttribute("id", `${String.fromCharCode(col + 65)}${rowNum}`);
             cell.setAttribute('contenteditable',true);
+            cell.addEventListener('input',updateObjectInMatrix);
             cell.addEventListener("focus",(event)=>{
                 Handlefocus(event.target)
             })
@@ -36,6 +40,21 @@ function SetHeadColor(element,colr){
 
 let CurrentCell;
 let PreviousCell;
+let cutcell;
+let lastPressbtn;
+let matrix = new Array(50);
+
+for (let row = 0; row < 50; row++) {
+  matrix[row] = new Array(26);
+  // matrix[0] -> 1st
+  // matrix[1] -> 2nd 
+  // matrix[row] -> matrix[0]-> matrix[99]
+  for(let col=0;col<26;col++){
+    matrix[row][col]={};
+  }
+}
+
+
 function Handlefocus(element){
     // console.log(element.id)
     CurrentCell = element;
@@ -75,6 +94,20 @@ function CreateRow(){
         tBody.append(trow)
     }
 }
+
+
+function updateObjectInMatrix() {
+    // console.log(matrix[0][0]);
+    let id = CurrentCell.id;
+    // id[0] -> 'A' -> 'A'.charCodeAt(0) -> 65
+    let col = id[0].charCodeAt(0) - 65;
+    let row = id.substring(1) - 1;
+    matrix[row][col] = {
+      text: CurrentCell.innerText,
+      style: CurrentCell.style.cssText,
+      id: id, // why we are storing ids, we will see that later
+    };
+  }
 
 function btnActivity(whatStyle, prop, whichBtn){
     if(CurrentCell.style[whatStyle] == prop){
@@ -124,3 +157,34 @@ underline_btn.addEventListener("click",()=>btnActivity("textDecoration", "underl
 createCol("th",tRow)
 CreateRow()
 
+cutbtn.addEventListener("click",()=>{
+    lastPressbtn = 'cut';
+    cutcell = {
+        text:CurrentCell.innerText,
+        style:CurrentCell.style.cssText
+    }
+    CurrentCell.innerText = ''
+    CurrentCell.style.cssText = ''
+    updateObjectInMatrix();
+})
+
+copyBtn.addEventListener('click',()=>{
+    lastPressbtn = 'copy';
+    cutcell={
+      text: CurrentCell.innerText,
+      style: CurrentCell.style.cssText,
+    }
+  })
+
+  pasteBtn.addEventListener('click',()=>{
+    CurrentCell.innerText=cutcell.text;
+    CurrentCell.style=cutcell.style;
+    // currentCell.style.cssText=cutCell.style;
+  
+    // i need to cleanup my cutcell object after paste
+    // 
+    if (lastPressbtn === "cut") {
+      cutcell = undefined;
+    }
+    updateObjectInMatrix();
+  })

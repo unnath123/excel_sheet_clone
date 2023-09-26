@@ -18,7 +18,7 @@ th,td{
     margin-top: 50px;
 }
 .btn{
-    width:20px;
+    min-width:20px;
     outline:none
 }
 #btn-bold{
