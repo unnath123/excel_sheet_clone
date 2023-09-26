@@ -7,6 +7,16 @@ const underline_btn = document.getElementById("btn-underline")
 const cutbtn = document.getElementById("btn-cut");
 const copyBtn = document.getElementById("btn-copy");
 const pasteBtn = document.getElementById("btn-paste");
+const bgColor = document.getElementById("bg-color");
+const font_Size = document.getElementById("font-size");
+const font_Family = document.getElementById("font-style-dropdown");
+const textColor = document.getElementById("text-color");
+
+const downloadBtn = document.getElementById("btn-download");
+const uploadInput = document.getElementById("btn-upload");
+
+const addSheet = document.getElementById("btn-addSheet");
+
 
 
 function createCol(type,WhichRow,rowNum){
@@ -155,7 +165,62 @@ btn_italic.addEventListener("click",()=>btnActivity("fontStyle", "italic", btn_i
 underline_btn.addEventListener("click",()=>btnActivity("textDecoration", "underline", underline_btn))
 
 createCol("th",tRow)
-CreateRow()
+CreateRow();
+
+font_Family.addEventListener("change",()=>{
+    CurrentCell.style.fontFamily = font_Family.value;
+})
+
+font_Size.addEventListener("change",()=>{
+    CurrentCell.style.fontSize = font_Size.value;
+})
+
+
+bgColor.addEventListener("input",()=>{
+    CurrentCell.style.backgroundColor = bgColor.value
+})
+
+textColor.addEventListener("input",()=>{
+    CurrentCell.style.color = textColor.value
+})
+
+
+function downloadMatrix() {
+  // 2d matrix into a memory that's accessible outside
+  const matrixString = JSON.stringify(matrix);
+  // matrixString -> into a blob
+  const blob = new Blob([matrixString],{ type: 'application/json'});
+  console.log(blob);
+  const link = document.createElement('a');
+  // createObjectURL converts my blob to link
+  link.href = URL.createObjectURL(blob);
+  link.download = 'table.json';
+  link.click();
+}
+
+downloadBtn.addEventListener("click",()=>{
+    downloadMatrix();
+})
+
+function uploadMatrix(event) {
+    const file = event.target.files[0];
+    // FileReader helps me to read my blod
+    if(file){
+      const reader = new FileReader();
+      reader.readAsText(file);
+      // readAsText will trigger onload method
+      // of reader instance
+      reader.onload = function(event){
+        const fileContent=JSON.parse(event.target.result);
+        // console.log(fileContent);
+        // update virtual memory
+        matrix = fileContent;
+        renderMatrix();
+      }
+    }
+  }
+
+  uploadInput.addEventListener('input',uploadMatrix);
 
 cutbtn.addEventListener("click",()=>{
     lastPressbtn = 'cut';
@@ -188,3 +253,27 @@ copyBtn.addEventListener('click',()=>{
     }
     updateObjectInMatrix();
   })
+
+let SheetNum = 1;
+let currentSheet = 1; // index
+
+  function genNextsheetbtn(){
+    let btn = document.createElement("button");
+    btn.className = 'btn'
+    let cont_div = document.getElementById("second-div");
+    SheetNum++;
+    currentSheet = SheetNum;
+    btn.innerText=`Sheet ${currentSheet}`;
+    btn.setAttribute('id',`sheet-${currentSheet}`);
+    // btn.setAttribute('onclick','viewSheet(event)');
+
+   cont_div.append(btn)
+  }
+
+  addSheet.addEventListener("click",()=>{
+    // saveMatrix();
+
+    // CreateNewMatrix();
+
+    genNextsheetbtn();
+})

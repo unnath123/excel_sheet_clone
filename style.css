@@ -19,6 +19,7 @@ th,td{
 }
 .btn{
     min-width:20px;
+    margin: 3px;
     outline:none
 }
 #btn-bold{
@@ -30,4 +31,11 @@ th,td{
 }
 #btn-underline{
     text-decoration: underline;
+}
+.second-buttons{
+    margin-top: 15px;
+    
+}
+.buttons{
+    margin-left: 10px; 
 }

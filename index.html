@@ -9,12 +9,40 @@
 <body>
 
     <div class="buttons">
-        <button class="btn"  id="btn-bold">B</button>
+        <button class="btn"   id="btn-bold">B</button>
         <button class="btn"   id="btn-italic">It</button>
         <button class="btn"   id="btn-underline">UL</button>
         <button class="btn"   id="btn-cut">cut</button>
         <button class="btn"   id="btn-copy">copy</button>
         <button class="btn"   id="btn-paste">paste</button>
+        <select id="font-style-dropdown">
+            <option value="serif">Serif</option>
+            <option value="sans-serif">Sans Serif</option>
+            <option value="monospace">monospace</option>
+            <option value="cursive">Cursive</option>
+        </select>
+        <select id="font-size">
+            <option value="16px" contenteditable="true">Font-size</option>
+            <option value="8px" contenteditable="true">8</option>
+            <option value="10px">10</option>
+            <option value="14px">14</option>
+            <option value="16px">16</option>
+            <option value="20px">20</option>
+        </select>
+        <label for="bg-color">bg-color</label>
+        <input type="color" id="bg-color">
+
+        <label for="text-color">Text-color</label>
+        <input type="color" id="text-color">
+
+
+        <button class="btn"   id="btn-download">download</button>
+        <button class="btn"   id="btn-upload">upload</button>
+
+        <div class="second-buttons" id="second-div">
+            <button class="btn"   id="btn-addSheet">Add sheet+</button>
+        </div>
+        
     </div>
     <table>
         <thead id="t-Head">
